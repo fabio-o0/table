@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "221243457299",
+    "firebase_url": "https://interactive-table-app.firebaseio.com",
+    "project_id": "interactive-table-app",
+    "storage_bucket": "interactive-table-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:221243457299:android:fb4a9016e1e39c8e",
+        "android_client_info": {
+          "package_name": "fabiosuarez.interactive.table"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "221243457299-3cplgdrfmqefsv058cfdvlr02skqqnrm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPLKJwhDpUvpwwE4_K5XkjSF28Qgg9PHg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
