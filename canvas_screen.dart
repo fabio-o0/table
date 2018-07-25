@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'auth.dart';
 
 Color appBarColor = new Color.fromRGBO(48, 126, 129, 1.0);
 Color backgroundColor = new Color.fromRGBO(28, 106, 109, 1.0);
@@ -9,8 +10,9 @@ double penSize = 4.0;
 StrokeCap penCap = StrokeCap.round;
 
 class DrawingPad extends StatefulWidget {
-
-  static String tag = 'drawing-pad';
+  DrawingPad({this.auth, this.onSignedOut});
+  final BaseAuth auth;
+  final VoidCallback onSignedOut;
 
   @override
   DrawingPadState createState() => new DrawingPadState();
@@ -26,13 +28,14 @@ class DrawingPadState extends State<DrawingPad> {
     setState(() {
       selectedChoice = choice;
     });
+  }
 
-    if (selectedChoice.title == 'Size') {
-      penSize = 10.0;
-    } else if (selectedChoice.title == 'Color') {
-      penColor = Colors.blue;
-    } else {
-      penCap = StrokeCap.square;
+  void signOut() async {
+    try {
+      await widget.auth.signOut();
+      widget.onSignedOut();
+    } catch (error) {
+      print(error);
     }
   }
 
@@ -61,7 +64,7 @@ class DrawingPadState extends State<DrawingPad> {
             },
           ),
           new PopupMenuButton<DrawingChoice>(
-            icon: new Icon(Icons.edit, color: new Color.fromRGBO(51, 51, 51, 1.0), size: 34.0,),
+            icon: new Icon(Icons.cloud, color: new Color.fromRGBO(51, 51, 51, 1.0), size: 34.0,),
             elevation: 1.0,
             onSelected: popUp,
             itemBuilder: (BuildContext context) {
@@ -81,6 +84,15 @@ class DrawingPadState extends State<DrawingPad> {
             },
           )
         ],
+      ),
+      drawer: new Drawer(
+        child: new ListView(
+          children: <Widget>[
+            new UserAccountsDrawerHeader(accountName: new Text('Samuel London'), accountEmail: null),
+            new Divider(),
+            new FlatButton(child: new Text('Sign out'), onPressed: signOut),
+          ],
+        ),
       ),
       body: new GestureDetector(
         onPanUpdate: (DragUpdateDetails details) {
@@ -131,17 +143,6 @@ class Sketcher extends CustomPainter {
   }
 }
 
-class CustomIcon extends StatelessWidget {
-  CustomIcon({this.image});
-  final String image;
-
-  @override
-  Widget build(BuildContext context) {
-    return new ImageIcon(new AssetImage('assets/' + image + '.png'),
-        color: new Color.fromRGBO(51, 51, 51, 1.0), size: 34.0);
-  }
-}
-
 class DrawingChoice {
   DrawingChoice({this.title, this.icon});
   String title;
@@ -149,27 +150,6 @@ class DrawingChoice {
 }
 
 List<DrawingChoice> choices = <DrawingChoice>[
-  new DrawingChoice(title: 'Size', icon: Icons.tune),
-  new DrawingChoice(title: 'Color', icon: Icons.color_lens),
-  new DrawingChoice(title: 'Pen', icon: Icons.settings)
+  new DrawingChoice(title: 'Upload', icon: Icons.backup),
+  new DrawingChoice(title: 'Files', icon: Icons.folder),
 ];
-
-//class ChoiceCard extends StatelessWidget {
-//  ChoiceCard({this.choice});
-//  final DrawingChoice choice;
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return new Card(
-//      color: Colors.blue,
-//      child: new Center(
-//        child: new Row(
-//          children: <Widget>[
-//            new Icon(choice.icon, size: 34.0),
-//            new Text(choice.title)
-//          ],
-//        ),
-//      ),
-//    );
-//  }
-//}
