@@ -21,6 +21,7 @@ class DrawingPad extends StatefulWidget {
 class DrawingPadState extends State<DrawingPad> {
 
   List<Offset> points = <Offset>[];
+//  List<Offset> savedPoints = <Offset>[];
 
   DrawingChoice selectedChoice;
 
@@ -39,12 +40,17 @@ class DrawingPadState extends State<DrawingPad> {
     }
   }
 
+//  void loadPoints() {
+//  }
+
+  void onPressed() {
+  }
+
   @override
   Widget build(BuildContext context) {
-
     final Container sketchArea = new Container(
       decoration: new BoxDecoration(
-          color: canvasColor,
+          color: Colors.white,
           borderRadius: new BorderRadius.circular(10.0)
       ),
       margin: new EdgeInsets.all(15.0),
@@ -55,40 +61,64 @@ class DrawingPadState extends State<DrawingPad> {
     );
     return new Scaffold(
       appBar: new AppBar(
-        backgroundColor: appBarColor,
+        backgroundColor: Colors.blueAccent,
         actions: <Widget>[
           new IconButton(
-            icon: new Icon(Icons.delete, size: 34.0, color: new Color.fromRGBO(51, 51, 51, 1.0)),
+            icon: new Icon(Icons.delete, size: 34.0, color: Colors.white),
             onPressed: () {
               setState(() => points.clear());
             },
           ),
-          new PopupMenuButton<DrawingChoice>(
-            icon: new Icon(Icons.cloud, color: new Color.fromRGBO(51, 51, 51, 1.0), size: 34.0,),
-            elevation: 1.0,
-            onSelected: popUp,
-            itemBuilder: (BuildContext context) {
-              return choices.map((DrawingChoice choice) {
-                return new PopupMenuItem<DrawingChoice>(
-                  value: choice,
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      new Text(choice.title),
-                      new SizedBox(width: 10.0,),
-                      new Icon(choice.icon)
-                    ],
-                  ),
-                );
-              }).toList();
-            },
-          )
+          new IconButton(icon: new Icon(Icons.cloud_upload), onPressed: onPressed)
+//          new PopupMenuButton<DrawingChoice>(
+//            icon: new Icon(Icons.cloud, color: Colors.white, size: 34.0,),
+//            elevation: 1.0,
+//            onSelected: popUp,
+//            itemBuilder: (BuildContext context) {
+//              return choices.map((DrawingChoice choice) {
+//                return new PopupMenuItem<DrawingChoice>(
+//                  value: choice,
+//                  child: new Row(
+//                    mainAxisAlignment: MainAxisAlignment.center,
+//                    children: <Widget>[
+//                      new Text(choice.title),
+//                      new SizedBox(width: 10.0,),
+//                      new Icon(choice.icon)
+//                    ],
+//                  ),
+//                );
+//              }).toList();
+//            },
+//          )
         ],
       ),
       drawer: new Drawer(
         child: new ListView(
           children: <Widget>[
-            new UserAccountsDrawerHeader(accountName: new Text('Samuel London'), accountEmail: null),
+            new Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                new SizedBox(height: 25.0,),
+                Center(child: new Text('Drawings', style: new TextStyle(fontSize: 34.0),)),
+                new Divider(height: 50.0,),
+//                new FlatButton(child: new Text(savedPoints.toString()), onPressed: loadPoints)
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: new Text('Drawing 1', style: new TextStyle(fontSize: 20.0)),
+                ),
+                new SizedBox(height: 20.0,),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: new Text('Drawing 2', style: new TextStyle(fontSize: 20.0)),
+                ),
+                new SizedBox(height: 20.0,),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: new Text('Drawing 3', style: new TextStyle(fontSize: 20.0)),
+                ),
+              ],
+            ),
+            new SizedBox(height: 440.0),
             new Divider(),
             new FlatButton(child: new Text('Sign out'), onPressed: signOut),
           ],
@@ -100,8 +130,9 @@ class DrawingPadState extends State<DrawingPad> {
           setState(() {
             RenderBox box = context.findRenderObject();
             Offset point = box.globalToLocal(details.globalPosition);
-            point = point.translate(-15.0, -(new AppBar().preferredSize.height + 50.0));
+            point = point.translate(-15.0, -(new AppBar().preferredSize.height + 40.0));
             points = new List.from(points)..add(point);
+//            savedPoints = new List.from(points)..addAll(savedPoints);
           });
         },
         onPanEnd: (DragEndDetails details) {
@@ -110,7 +141,7 @@ class DrawingPadState extends State<DrawingPad> {
         child: new Container(
           child: sketchArea,
           decoration: new BoxDecoration(
-              color: backgroundColor
+              color: Colors.blueAccent
           ),
         ),
       ),

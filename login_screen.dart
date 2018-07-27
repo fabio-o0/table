@@ -71,17 +71,25 @@ class LoginPageState extends State<LoginPage> {
     showDialog(context: context, child: dialog);
   }
 
-  Color chooseBackgroundColor() {
+  Color chooseIconColor() {
     if (formType == FormType.login) {
-      return Colors.lightBlueAccent;
+      return Colors.white;
     }
-    return Colors.limeAccent;
+    return Colors.black;
+  }
+
+  Color chooseLogoColor() {
+    if (formType == FormType.login) {
+      return Colors.black;
+    }
+    return Colors.white;
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      backgroundColor: chooseBackgroundColor(),
+      resizeToAvoidBottomPadding: false,
+      backgroundColor: Colors.blueAccent,
       body: new Container(
         padding: new EdgeInsets.symmetric(horizontal: 40.0),
         child: new Form(
@@ -89,7 +97,7 @@ class LoginPageState extends State<LoginPage> {
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.end,
-            children: buildInputs() + buildSubmitButtons(),
+            children: buildLogo() + buildInputs() + buildSubmitButtons(),
           ),
         ),
       ),
@@ -100,7 +108,7 @@ class LoginPageState extends State<LoginPage> {
     return [
       new TextFormField(
         decoration: new InputDecoration(
-            labelText: 'Email'),
+            labelText: 'Email',),
         keyboardType: TextInputType.emailAddress,
         validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
         onSaved: (value) => email = value,
@@ -115,6 +123,35 @@ class LoginPageState extends State<LoginPage> {
     ];
   }
 
+  List<Widget> buildLogo() {
+    return [
+      new Container(
+        height: 300.0,
+        width: 300.0,
+        child: new Center(
+          child: new Stack(
+            children: <Widget>[
+              new Positioned(
+                //right: -10.0,
+                  child: new Center(
+                      child: new Icon(
+                          Icons.brightness_1,
+                          size: 300.0,
+                          color: chooseIconColor()))),
+              new Positioned(
+                child: new Center(
+                  child: new ImageIcon(new AssetImage('assets/logo.png'),
+                      color: chooseLogoColor(),
+                      size: 200.0),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ];
+  }
+
   List<Widget> buildSubmitButtons() {
     if (formType == FormType.login) {
       return [
@@ -123,6 +160,7 @@ class LoginPageState extends State<LoginPage> {
         ),
         new RaisedButton(
           onPressed: validateAndSubmit,
+          color: chooseIconColor(),
           child: new Text('Login', style: new TextStyle(
               fontSize: 20.0),
           ),
@@ -145,8 +183,9 @@ class LoginPageState extends State<LoginPage> {
         ),
         new RaisedButton(
           onPressed: validateAndSubmit,
+          color: chooseIconColor(),
           child: new Text('Create an account', style: new TextStyle(
-              fontSize: 20.0),
+              fontSize: 20.0, color: chooseLogoColor()),
           ),
         ),
         new SizedBox(
